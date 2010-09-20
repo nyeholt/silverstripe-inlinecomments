@@ -1,0 +1,13 @@
+
+.inlineCommentForm { display: none; position: absolute;}
+.inlineCommentForm { padding: 1em; border: 1px solid #ccc; background: #f8f8f8; }
+.inlineCommentForm textarea { width: 400px; height: 200px; }
+.inlineCommentForm .Actions { padding-top: 1em;}
+
+.inlineCommentForm .Actions input[name=action_deleteinlinecomment] { display: none; }
+
+
+.inlineCommentContainer { position: absolute; right: 2em; }
+.inlineComment { background-color: #FFE862; padding: 1em; border: 1px solid #333; width: 300px; margin-bottom: 1em;  }
+
+#InlineCommentTemplate {display: none; }
