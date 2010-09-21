@@ -37,7 +37,7 @@
 				
 				// only want to be able to comment on uniquely identifiable items
 				if (id.length) {
-					var commentButton = $(' <img src="inlinecomments/images/comments.png"/>').appendTo($this);
+					var commentButton = $(' <img class="inlineCommentsIcon" src="inlinecomments/images/comments.png"/>').appendTo($this);
 
 					$this.hover(function () {
 						$('.inlineCommentContainer').fadeTo(1, 0.1);
