@@ -40,8 +40,8 @@
 					var commentButton = $(' <img src="inlinecomments/images/comments.png"/>').appendTo($this);
 
 					$this.hover(function () {
-						$('.inlineCommentContainer').fadeTo(50, 0.1);
-						$('#' + id + '_Comments').fadeTo(50, 1);
+						$('.inlineCommentContainer').fadeTo(1, 0.1);
+						$('#' + id + '_Comments').fadeTo(1, 1);
 					}, function () {
 						// hide my comments slowly
 					});
