@@ -12,11 +12,21 @@
 				commentForm.hide();
 			});
 
+			var initialText = 'Add';
+			commentForm.find('input[type=submit]').click(function () {
+				$(this).attr('disabled', 'disabled');
+				initialText = $(this).val();
+				$(this).val('Please wait...');
+			})
+
 			commentForm.ajaxForm(function (data) {
 				if (data) {
 					var result = $.parseJSON(data);
 					if (result && result.status) {
 						methods.loadComment(result.message.comment, commentForm);
+						commentForm.find('textarea[name=Comment]').val('');
+						commentForm.find('input[type=submit]').val(initialText).attr('disabled', false);
+
 					} else {
 						alert("There was an error saving your comment: " + result.message);
 					}
