@@ -51,11 +51,10 @@ class InlineCommentForm extends Form {
 		parent::__construct($controller, $name, $fields, $actions, new RequiredFields('Comment'));
 
 		Requirements::javascript(THIRDPARTY_DIR.'/jquery/jquery.js');
+		Requirements::javascript(THIRDPARTY_DIR.'/jquery-form/jquery.form.js');
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery-ui/jquery-ui-1.8rc3.custom.js');
 		Requirements::javascript('inlinecomments/javascript/inline-comments.js');
 		Requirements::themedCSS('inline-comments');
-
-		
 
 		// load the existing items for the given context
 		$filter = singleton('ICUtils')->dbQuote(array(
