@@ -29,10 +29,15 @@ class InlineCommentForm extends Form {
 	public function  __construct($controller, $name, $context, $commentOn='h1') {
 		$this->context = $context;
 
-		if (!$this->context->ID) {
-			throw new Exception("Invalid context object for inline commenting form");
+		if (!$this->context || !$this->context->ID) {
+			if (isset($_POST['TargetType']) && $_POST['TargetID']) {
+				$this->context = DataObject::get_by_id($_POST['TargetType'], $_POST['TargetID']);
+			}
+			if (!$this->context || !$this->context->exists()) {
+				throw new Exception("Invalid context object for inline commenting form");
+			}
 		}
-
+		
 		$fields = new FieldSet();
 		$fields->push(new TextareaField('Comment', _t('InlineComment.COMMENT', 'Add Comment')));
 		$fields->push(new HiddenField('CommentOnElement'));
@@ -61,6 +66,7 @@ class InlineCommentForm extends Form {
 			'TargetType =' => $this->context->ClassName,
 			'TargetID =' => $this->context->ID,
 		));
+
 		$comments = DataObject::get('InlineComment', $filter);
 		$toLoad = array();
 		if ($comments) {
@@ -78,7 +84,10 @@ class InlineCommentForm extends Form {
 	}
 
 	public function add(array $data, Form $form, $request) {
-		
+		if (!$this->context && isset($data['TargetType'])) {
+			$this->context = DataObject::get_by_id($data['TargetType'], $data['TargetID']);
+		}
+
 		if (!$this->context->canEdit()) {
 			return;
 		}
