@@ -72,7 +72,6 @@
 					commentButton.click(function () {
 						
 						commentForm.show();
-						commentForm.find('textarea[name=Comment]').val('');
 						commentForm.find('input[name=CommentOnElement]').val(id);
 						
 						if($.browser.msie && $.browser.version=="6.0") {
@@ -85,6 +84,7 @@
 						} else {
 							commentForm.position({ my: "left top", at: "right bottom", of: commentButton, collision: "fit"});
 						}
+						commentForm.find('textarea[name=Comment]').val('').focus();
 					})
 				}
 			});
