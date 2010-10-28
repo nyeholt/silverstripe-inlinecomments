@@ -7,30 +7,41 @@
 				return;
 			}
 
-			var closeButton = $('<input type="button" value="Close" class="action" />').appendTo(commentForm.find('.Actions'));
-			closeButton.click(function () {
-				commentForm.hide();
-			});
-
 			var initialText = 'Add';
-			commentForm.find('input[type=submit]').click(function () {
+			commentForm.find('input[type=submit]').click(function (e) {
 				$(this).attr('disabled', 'disabled');
 				initialText = $(this).val();
 				$(this).val('Please wait...');
+				e.preventDefault();
+				commentForm.submit();
 			})
+			
+			var closeButton = $('<input type="button" value="Close" class="action" />').appendTo(commentForm.find('.Actions'));
+			closeButton.click(function () {
+				if($.browser.msie && $.browser.version=="6.0") {
+					$('select').css('visibility', 'visible');
+				}
+				commentForm.find('input[type=submit]').val(initialText).attr('disabled', false);
+				commentForm.hide();
+			});
 
-			commentForm.ajaxForm(function (data) {
-				if (data) {
-					var result = $.parseJSON(data);
-					if (result && result.status) {
-						methods.loadComment(result.message.comment, commentForm);
-						commentForm.find('textarea[name=Comment]').val('');
-						commentForm.find('input[type=submit]').val(initialText).attr('disabled', false);
+			commentForm.ajaxForm({
+				success: function (data) {
+					if (data) {
+						var result = $.parseJSON(data);
+						if (result && result.status) {
+							methods.loadComment(result.message.comment, commentForm);
+							commentForm.find('textarea[name=Comment]').val('');
+							commentForm.find('input[type=submit]').val(initialText).attr('disabled', false);
 
-					} else {
-						alert("There was an error saving your comment: " + result.message);
+						} else {
+							alert("There was an error saving your comment: " + result.message);
+						}
+						if($.browser.msie && $.browser.version=="6.0") {
+							$('select').css('visibility', 'visible');
+						}
+						commentForm.hide();
 					}
-					commentForm.hide();
 				}
 			});
 
@@ -51,16 +62,29 @@
 
 					$this.hover(function () {
 						$('.inlineCommentContainer').fadeTo(1, 0.1);
-						$('#' + id + '_Comments').fadeTo(1, 1);
+						
+						var offset = $(this).offset();
+						$('#' + id + '_Comments').css('top', offset.top + 'px').fadeTo(1, 1);
 					}, function () {
 						// hide my comments slowly
 					});
 
 					commentButton.click(function () {
+						
 						commentForm.show();
 						commentForm.find('textarea[name=Comment]').val('');
 						commentForm.find('input[name=CommentOnElement]').val(id);
-						commentForm.position({ my: "left top", at: "right bottom", of: commentButton, collision: "fit"});
+						
+						if($.browser.msie && $.browser.version=="6.0") {
+							$('select').css('visibility', 'hidden');
+							commentForm.css({
+								position: 'absolute',
+								top: '40%',
+								left: '40%'
+							});
+						} else {
+							commentForm.position({ my: "left top", at: "right bottom", of: commentButton, collision: "fit"});
+						}
 					})
 				}
 			});
@@ -110,14 +134,15 @@
 
 		createCommentContainer: function (id) {
 			var container = $('<div id="'+id+'_Comments" class="inlineCommentContainer"></div>');
-			var offset = $('#'+id).offset();
+			var offsetContainer = $('#'+id);
+			var offset = offsetContainer.offset();
 			$('body').append(container);
 			container.css('top', offset.top + 'px');
 			container.show();
 
 			container.hover(function () {
-				$('.inlineCommentContainer').fadeTo(50, 0.1);
-				$(this).fadeTo(50, 1);
+				$('.inlineCommentContainer').fadeTo(1, 0.1);
+				$(this).fadeTo(1, 1);
 			}, function () {
 				
 			})
