@@ -9,10 +9,15 @@
 
 			var initialText = 'Add';
 			commentForm.find('input[type=submit]').click(function (e) {
+				e.preventDefault();
+				if (commentForm.find('textarea[name=Comment]').val() == '') {
+					commentForm.find('textarea[name=Comment]').focus();
+					return false;
+				}
 				$(this).attr('disabled', 'disabled');
 				initialText = $(this).val();
 				$(this).val('Please wait...');
-				e.preventDefault();
+				
 				commentForm.submit();
 			})
 			
@@ -58,7 +63,7 @@
 				
 				// only want to be able to comment on uniquely identifiable items
 				if (id.length) {
-					var commentButton = $(' <img class="inlineCommentsIcon" src="inlinecomments/images/comments.png"/>').appendTo($this);
+					var commentButton = $('<img class="inlineCommentsIcon" src="inlinecomments/images/comments.png"/>').appendTo($this);
 
 					$this.hover(function () {
 						$('.inlineCommentContainer').fadeTo(1, 0.1);
@@ -69,22 +74,25 @@
 						// hide my comments slowly
 					});
 
-					commentButton.click(function () {
-						
+					commentButton.click(function (e) {
+						e.preventDefault();
 						commentForm.show();
 						commentForm.find('input[name=CommentOnElement]').val(id);
 						
-						if($.browser.msie && $.browser.version=="6.0") {
+						if($.browser.msie && ($.browser.version=="6.0" || $.browser.version=="7.0")) {
 							$('select').css('visibility', 'hidden');
 							commentForm.css({
 								position: 'absolute',
-								top: '40%',
-								left: '40%'
+								top: '200px',
+								left: '400px'
 							});
+							commentForm.css("top", ($(window).scrollTop()) + "px");
+
 						} else {
 							commentForm.position({ my: "left top", at: "right bottom", of: commentButton, collision: "fit"});
 						}
 						commentForm.find('textarea[name=Comment]').val('').focus();
+						
 					})
 				}
 			});

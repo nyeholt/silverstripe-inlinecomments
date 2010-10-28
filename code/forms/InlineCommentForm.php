@@ -53,7 +53,7 @@ class InlineCommentForm extends Form {
 
 		$this->addExtraClass('inlineCommentForm');
 
-		parent::__construct($controller, $name, $fields, $actions, new RequiredFields('Comment'));
+		parent::__construct($controller, $name, $fields, $actions);
 
 		Requirements::javascript(THIRDPARTY_DIR.'/jquery/jquery.js');
 		Requirements::javascript(THIRDPARTY_DIR.'/jquery-form/jquery.form.js');
