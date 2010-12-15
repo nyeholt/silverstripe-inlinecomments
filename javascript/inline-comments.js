@@ -1,5 +1,7 @@
 
 (function ($) {
+	var current_id = 1;
+	
 	var methods = {
 		init: function (options) {
 			var commentForm = $(options.form);
@@ -20,7 +22,7 @@
 				
 				commentForm.submit();
 			})
-			
+
 			var closeButton = $('<input type="button" value="Close" class="action" />').appendTo(commentForm.find('.Actions'));
 			closeButton.click(function () {
 				if($.browser.msie && $.browser.version=="6.0") {
@@ -50,17 +52,17 @@
 				}
 			});
 
-			if (options.load) {
-				$(options.load).each(function () {
-					methods.loadComment(this, commentForm);
-				})
-			}
-
-			return this.each(function(){
+			var ret = this.each(function(){
 				$this = $(this);
 				
 				var id = $this.attr('id');
 				
+				if (!id.length) {
+					id = $this.getPath().replace(/>/g, '_');
+					id = id.replace(/[^A-Za-z0-9_]/g, '');
+					$this.attr('id', id);
+				}
+
 				// only want to be able to comment on uniquely identifiable items
 				if (id.length) {
 					var commentButton = $('<img class="inlineCommentsIcon" src="inlinecomments/images/comments.png"/>').appendTo($this);
@@ -96,6 +98,15 @@
 					})
 				}
 			});
+			
+			// now load any comments that we need to
+			if (options.load) {
+				$(options.load).each(function () {
+					methods.loadComment(this, commentForm);
+				})
+			}
+
+			return ret;
 		},
 
 		loadComment: function (comment, commentForm) {

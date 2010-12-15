@@ -37,7 +37,7 @@ class InlineCommentForm extends Form {
 				throw new Exception("Invalid context object for inline commenting form");
 			}
 		}
-		
+
 		$fields = new FieldSet();
 		$fields->push(new TextareaField('Comment', _t('InlineComment.COMMENT', 'Add Comment')));
 		$fields->push(new HiddenField('CommentOnElement'));
@@ -59,6 +59,7 @@ class InlineCommentForm extends Form {
 		Requirements::javascript(THIRDPARTY_DIR.'/jquery-form/jquery.form.js');
 		Requirements::javascript(THIRDPARTY_DIR . '/jquery-ui/jquery-ui-1.8rc3.custom.js');
 		Requirements::javascript('inlinecomments/javascript/inline-comments.js');
+		Requirements::javascript('inlinecomments/javascript/jquery-getpath.js');
 		Requirements::themedCSS('inline-comments');
 
 		// load the existing items for the given context
@@ -79,7 +80,7 @@ class InlineCommentForm extends Form {
 			'form' => '#' . $this->FormName(),
 			'load' => $toLoad,
 		);
-
+		
 		Requirements::customScript('jQuery("'.$commentOn.'").inlineComment(' . Convert::array2json($opts) . ')');
 	}
 
@@ -95,7 +96,7 @@ class InlineCommentForm extends Form {
 		$comment = new InlineComment();
 		$form->saveInto($comment);
 		$comment->AuthorID = Member::currentUserID();
-		
+
 		$comment->write();
 
 		$res = array('comment' => $comment->toMap());

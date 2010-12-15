@@ -6,20 +6,14 @@
 
 ## Requirements
 
- * SilverStripe 2.4.2
+ * SilverStripe 2.4.x
 
 ## Documentation
 
-Please see http://github.com/nyeholt/
+Please see http://github.com/nyeholt/silverstripe-inlinecomments
 
 ## Installation Instructions
 
-<Step by step instructions>
-
 ## Usage Overview
 
-<Highlevel usage, refer to wiki documentation for details>
-
 ## Known issues
-
-<Popular issues, how to solve them, and links to tickets in the bugtracker>
