@@ -10,9 +10,12 @@ class InlineCommentControllerExtension extends Extension {
 		'InlineCommentForm',
 	);
 	
-	public function InlineCommentForm() {
+	public function InlineCommentForm($element) {
+		if (!$element) {
+			return;
+		}
 		if (Member::currentUserID()) {
-			return new InlineCommentForm($this->owner, 'InlineCommentForm', $this->owner->data(), 'p');
+			return new InlineCommentForm($this->owner, 'InlineCommentForm', $this->owner->data(), $element);
 		}
 	}
 }
