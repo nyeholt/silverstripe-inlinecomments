@@ -154,6 +154,10 @@
 		createCommentContainer: function (id) {
 			var container = $('<div id="'+id+'_Comments" class="inlineCommentContainer"></div>');
 			var offsetContainer = $('#'+id);
+			if (!offsetContainer.length) {
+				// just add it in to something for now
+				offsetContainer = $('body');
+			}
 			var offset = offsetContainer.offset();
 			$('body').append(container);
 			container.css('top', offset.top + 'px');
