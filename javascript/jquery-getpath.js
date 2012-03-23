@@ -6,10 +6,10 @@
 
 jQuery.fn.getPath = function () {
     if (this.length != 1) throw 'Requires one element.';
-
     var path, node = this;
+
     while (node.length) {
-        var realNode = node[0], name = realNode.localName;
+        var realNode = node[0], name = realNode.nodeName.toLowerCase();
         if (!name) break;
         name = name.toLowerCase();
 
@@ -26,3 +26,4 @@ jQuery.fn.getPath = function () {
 
     return path;
 };
+
